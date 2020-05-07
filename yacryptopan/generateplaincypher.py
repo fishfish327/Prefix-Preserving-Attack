@@ -6,6 +6,8 @@ with open(FILE, "r") as input:
     flines = input.readlines()
     for plaintext in flines:
         plaintext = plaintext.strip()
-        print (cp.anonymize(plaintext))
+        print "{},{}".format(plaintext,cp.anonymize(plaintext))
     
+                    
+
 
