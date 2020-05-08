@@ -9,6 +9,8 @@ public class BitFrequencyTrie {
         public boolean isWord;
         public boolean isRoot;
         public int frequency;
+        // temp frequency for one query
+        public Integer tempFrequency;
         public char ch;
         // two characters '0' and '1'
         public TrieNode[] children = new TrieNode[2];
@@ -43,7 +45,7 @@ public class BitFrequencyTrie {
         PriorityQueue<IPAddress> res = new PriorityQueue<>((a, b) -> a.maxReconstructBit - b.maxReconstructBit);
         TrieNode curr = root;
         StringBuilder sb = new StringBuilder();
-        LinkedList<Integer> frequencyList = new LinkedList<>();
+        LinkedList<TrieNode> frequencyList = new LinkedList<>();
         // use backtrackint to traverse the trie
         traverseTrie(curr, frequencyList, sb, res, k);
 
@@ -51,7 +53,7 @@ public class BitFrequencyTrie {
     }
 
     // use backtracking to traverse the trie
-    public void traverseTrie(TrieNode curr, LinkedList<Integer> list, StringBuilder sb, PriorityQueue<IPAddress> res, int k){
+    public void traverseTrie(TrieNode curr, LinkedList<TrieNode> list, StringBuilder sb, PriorityQueue<IPAddress> res, int k){
         if(curr == null){
             return;
         }
@@ -60,7 +62,8 @@ public class BitFrequencyTrie {
             // if this node is a word, add it to the pq
             String ipInBinary = sb.toString();
             String ipInDecimal = IPUtil.binaryToDecimal(ipInBinary);
-            res.add(new IPAddress(ipInBinary, ipInDecimal, list.stream().reduce(0, Integer::sum)));
+            res.add(new IPAddress(ipInBinary, ipInDecimal, list.stream().map(node -> node.tempFrequency).reduce(0, Integer::sum)));
+            list.stream().forEach(node -> node.tempFrequency = 0);
 
             if(res.size() > k){
                 res.poll();
@@ -71,7 +74,8 @@ public class BitFrequencyTrie {
                 // after backtracking , remove the char and bit frequency in the list
                 if(child != null){
                     sb.append(child.ch);
-                    list.addLast(child.frequency);
+                    child.tempFrequency = child.frequency;
+                    list.addLast(child);
                     traverseTrie(child, list, sb, res, k);
                     // clear stringbuilder and arraylist
                     sb.deleteCharAt(sb.length() - 1);
