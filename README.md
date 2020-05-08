@@ -29,3 +29,8 @@ rm *.class
 cd Attack/src/
 java main.ChosenCipherAttack ../../yacryptopan/result.txt ../../yacryptopan/cypherplain.txt
 ```
+- how to run cpa Attack code
+```shell
+cd Attack/src/
+java main.ChosenPlainAttack ../../yacryptopan/result.txt 
+```
