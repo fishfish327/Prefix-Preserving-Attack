@@ -13,3 +13,19 @@ python2 generatecypherplain.py > cypherplain.txt
 cd yacryptopan
 python2 generateplaincypher.py > plaincypher.txt
 ```
+
+- how to compile java code
+```shell
+cd Attack/src/main
+javac *.java
+```
+- how to clean java class file
+```shell
+cd Attack/src/main
+rm *.class
+```
+- how to run cca Attack code
+```shell
+cd Attack/src/
+java main.ChosenCipherAttack ../../yacryptopan/result.txt ../../yacryptopan/cypherplain.txt
+```
